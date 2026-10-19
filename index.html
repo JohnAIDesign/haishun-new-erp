@@ -335,5 +335,5 @@ const tabs=[...document.querySelectorAll('[role="tab"]')];
 function activate(t,focus=false){tabs.forEach(b=>{const on=b===t;b.setAttribute('aria-selected',String(on));b.tabIndex=on?0:-1;document.getElementById(b.getAttribute('aria-controls')).hidden=!on});if(focus)t.focus()}
 tabs.forEach((t,i)=>{t.addEventListener('click',()=>activate(t));t.addEventListener('keydown',e=>{if(['ArrowLeft','ArrowRight','Home','End'].includes(e.key)){e.preventDefault();const idx=e.key==='Home'?0:e.key==='End'?tabs.length-1:(i+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;activate(tabs[idx],true)}})});
 // 保留旧版数字链接及早期p7形式的定位。
-if(/^#p[1-9]$/.test(location.hash)){const id=location.hash.slice(2);history.replaceState(null,'','#'+id);document.getElementById(id).scrollIntoView()}
+const anchor=location.hash.match(/^#p?([1-9])$/);if(anchor){const id=anchor[1];if(location.hash!=='#'+id)history.replaceState(null,'','#'+id);addEventListener('load',()=>requestAnimationFrame(()=>document.getElementById(id).scrollIntoView({behavior:'instant',block:'start'})),{once:true})}
 })();</script></body></html>
